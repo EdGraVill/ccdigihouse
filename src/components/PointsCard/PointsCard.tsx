@@ -12,11 +12,13 @@ interface Props {
 }
 
 const PointsCard: FC<Props> = ({ points }) => (
-  <View style={styles.container}>
-    <Text style={StyleSheet.compose(styles.text, styles.points)}>
+  <View style={styles.container} testID="PointsCardContainer">
+    <Text style={StyleSheet.compose(styles.text, styles.points)} testID="PointsCardPoints">
       {points.toLocaleString('es-MX', { minimumFractionDigits: 2 })} pts
     </Text>
-    <Text style={StyleSheet.compose(styles.text, styles.month)}>{currentMonth}</Text>
+    <Text style={StyleSheet.compose(styles.text, styles.month)} testID="PointsCardMonth">
+      {currentMonth}
+    </Text>
   </View>
 );
 

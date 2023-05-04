@@ -11,19 +11,18 @@ interface Props {
 }
 
 const FilterButtons: React.FC<Props> = ({ filter, setFilter }) => {
-  const { current: incomeButtonSize } = useRef(new Animated.Value(1));
-  const { current: expenseButtonSize } = useRef(new Animated.Value(1));
+  const { current: incomeButtonSize } = useRef(
+    new Animated.Value(filter === Filter.All || filter === Filter.Incomes ? 1 : 0),
+  );
+  const { current: expenseButtonSize } = useRef(
+    new Animated.Value(filter === Filter.All || filter === Filter.Expenses ? 1 : 0),
+  );
 
   useEffect(() => {
     incomeButtonSize.stopAnimation();
     expenseButtonSize.stopAnimation();
 
-    if (filter === Filter.All) {
-      Animated.parallel([
-        Animated.spring(incomeButtonSize, { toValue: 1, useNativeDriver: false }),
-        Animated.spring(expenseButtonSize, { toValue: 1, useNativeDriver: false }),
-      ]).start();
-    } else if (filter === Filter.Expenses) {
+    if (filter === Filter.Expenses) {
       Animated.parallel([
         Animated.spring(incomeButtonSize, { toValue: 0, useNativeDriver: false }),
         Animated.spring(expenseButtonSize, { toValue: 1, useNativeDriver: false }),
@@ -32,6 +31,11 @@ const FilterButtons: React.FC<Props> = ({ filter, setFilter }) => {
       Animated.parallel([
         Animated.spring(incomeButtonSize, { toValue: 1, useNativeDriver: false }),
         Animated.spring(expenseButtonSize, { toValue: 0, useNativeDriver: false }),
+      ]).start();
+    } else {
+      Animated.parallel([
+        Animated.spring(incomeButtonSize, { toValue: 1, useNativeDriver: false }),
+        Animated.spring(expenseButtonSize, { toValue: 1, useNativeDriver: false }),
       ]).start();
     }
   }, [filter]);
@@ -68,7 +72,10 @@ const FilterButtons: React.FC<Props> = ({ filter, setFilter }) => {
   }, [filter]);
 
   return (
-    <View style={StyleSheet.compose(styles.container, { gap: filter === Filter.All ? 15 : 0 })}>
+    <View
+      style={StyleSheet.compose(styles.container, { gap: filter === Filter.All ? 15 : 0 })}
+      testID="FilterButtonsContainer"
+    >
       <Button
         onPress={onPress(filter === Filter.All ? Filter.Incomes : Filter.All)}
         style={{ flexGrow: incomeButtonSize, opacity: incomeButtonSize }}

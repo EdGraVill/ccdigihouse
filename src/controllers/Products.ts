@@ -1,6 +1,6 @@
 import httpClient from './httpClient';
 
-interface RawProduct {
+export interface RawProduct {
   createdAt: string;
   id: string;
   image: string;
@@ -25,20 +25,20 @@ interface ProductChangeListener {
 export default class ProductController {
   static storeKey = Symbol('ProductControllerStoreKey');
 
-  private lastFetch?: Date;
-  private productIds = new Set<Product['id']>();
-  private abortController = new AbortController();
-  private productChangeListeners: ProductChangeListener[] = [];
-
-  constructor(private readonly cacheTime = 1000 * 60 * 15 /* 15 minutes */) {}
-
-  private parseProducts = (products: RawProduct[]): Product[] => {
+  static parseProducts = (products: RawProduct[]): Product[] => {
     return products.map((product) => ({
       ...product,
       createdAt: new Date(product.createdAt),
       isRedemption: product.is_redemption,
     }));
   };
+
+  private lastFetch?: Date;
+  private productIds = new Set<Product['id']>();
+  private abortController = new AbortController();
+  private productChangeListeners: ProductChangeListener[] = [];
+
+  constructor(private readonly cacheTime = 1000 * 60 * 15 /* 15 minutes */) {}
 
   private mergeProducts = (products: Product[]): void => {
     const productsClone = [...this.products];
@@ -82,13 +82,11 @@ export default class ProductController {
       const response = await httpClient.get<RawProduct[]>('products', { signal: this.abortController.signal });
       this.lastFetch = new Date();
 
-      const parsedProducts = this.parseProducts(response.data);
+      const parsedProducts = ProductController.parseProducts(response.data);
       this.mergeProducts(parsedProducts);
 
       return this.products;
     } catch (error) {
-      console.error(error);
-
       return this.products;
     }
   };
@@ -99,10 +97,15 @@ export default class ProductController {
     return () => {
       const index = this.productChangeListeners.indexOf(callback);
 
-      if (index > -1) {
-        this.productChangeListeners.splice(index, 1);
-      }
+      this.productChangeListeners.splice(index, 1);
     };
+  };
+
+  public clean = () => {
+    this.products = [];
+    this.productIds = new Set<Product['id']>();
+    this.lastFetch = undefined;
+    Reflect.deleteProperty(globalThis, ProductController.storeKey);
   };
 
   public abort = async (): Promise<void> => {

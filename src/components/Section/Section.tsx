@@ -9,9 +9,14 @@ interface Props {
 }
 
 const Section: FC<PropsWithChildren<Props>> = ({ isSmallTitle, title, children }) => (
-  <View>
-    <Text style={StyleSheet.compose(styles.base, isSmallTitle ? styles.smallTitle : styles.bigTitle)}>{title}</Text>
-    <View>{children}</View>
+  <View testID="SectionContainer">
+    <Text
+      style={StyleSheet.compose(styles.base, isSmallTitle ? styles.smallTitle : styles.bigTitle)}
+      testID="SectionTitle"
+    >
+      {title}
+    </Text>
+    <View testID="SectionContent">{children}</View>
   </View>
 );
 

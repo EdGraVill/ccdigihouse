@@ -16,6 +16,7 @@ const Image: FC<ImageProps> = (props) => {
         {...props}
         source={require('../../assets/images/placeholderImage.png')}
         style={StyleSheet.compose(props.style, { display: isLoaded ? 'none' : 'flex' })}
+        testID="ImageBackdropImage"
       />
       <RNImage
         {...props}
@@ -24,6 +25,7 @@ const Image: FC<ImageProps> = (props) => {
           position: isLoaded ? 'relative' : 'absolute',
           transform: [{ scale: isLoaded ? 1 : 0 }],
         })}
+        testID="ImageImage"
       />
     </>
   );

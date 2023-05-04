@@ -7,7 +7,7 @@
     "ios": "npx react-native run-ios",
     "lint": "eslint .",
     "start": "npx react-native start",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@apptoolkit/eslint-config": "^0.1.0",
@@ -26,6 +26,7 @@
     "@babel/runtime": "^7.20.0",
     "@react-native-community/eslint-config": "^3.2.0",
     "@testing-library/jest-native": "^5.4.2",
+    "@testing-library/react": "^14.0.0",
     "@testing-library/react-native": "^12.1.2",
     "@tsconfig/react-native": "^2.0.2",
     "@types/jest": "^29.2.1",

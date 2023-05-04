@@ -8,9 +8,13 @@ interface Props {
 }
 
 const WelcomeMessage: FC<Props> = ({ name }) => (
-  <View style={styles.container}>
-    <Text style={StyleSheet.compose(styles.text, styles.greeting)}>Bienvenido de vuelta!</Text>
-    <Text style={StyleSheet.compose(styles.text, styles.name)}>{name}</Text>
+  <View style={styles.container} testID="WelcomeMessageContainer">
+    <Text style={StyleSheet.compose(styles.text, styles.greeting)} testID="WelcomeMessageGreeting">
+      Bienvenido de vuelta!
+    </Text>
+    <Text style={StyleSheet.compose(styles.text, styles.name)} testID="WelcomeMessageName">
+      {name}
+    </Text>
   </View>
 );
 

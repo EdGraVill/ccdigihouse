@@ -18,7 +18,7 @@ const ProductList: FC<Props> = ({ isFetching, onProductPress, products, refreshP
   // This will help to avoid creating a new function on every item render
   const renderItem = useCallback<ListRenderItem<Product>>(
     (props) => (
-      <TouchableOpacity onPress={() => onProductPress?.(props.item)}>
+      <TouchableOpacity onPress={() => onProductPress?.(props.item)} testID="ItemTouchable">
         <ListItem {...props} />
       </TouchableOpacity>
     ),
@@ -33,8 +33,11 @@ const ProductList: FC<Props> = ({ isFetching, onProductPress, products, refreshP
       data={products}
       initialNumToRender={10}
       keyExtractor={keyExtractor}
-      refreshControl={<RefreshControl onRefresh={refreshProducts} refreshing={isFetching} />}
+      refreshControl={
+        <RefreshControl onRefresh={refreshProducts} refreshing={isFetching} testID="ListRefreshControl" />
+      }
       renderItem={renderItem}
+      testID="List"
     />
   );
 };
