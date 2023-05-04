@@ -11,10 +11,12 @@ interface Props {
 }
 
 const Button: FC<Props> = ({ onPress, style, text }) => (
-  <Animated.View style={[styles.touchable, style]}>
-    <TouchableOpacity onPress={onPress} style={styles.touchable}>
-      <View style={styles.container}>
-        <Text style={styles.text}>{text}</Text>
+  <Animated.View style={[styles.touchable, style]} testID="ButtonContainer">
+    <TouchableOpacity onPress={onPress} style={styles.touchable} testID="ButtonTouchable">
+      <View style={styles.container} testID="ButtonView">
+        <Text style={styles.text} testID="ButtonText">
+          {text}
+        </Text>
       </View>
     </TouchableOpacity>
   </Animated.View>
