@@ -18,12 +18,17 @@ export interface Product {
   product: string;
 }
 
+interface ProductChangeListener {
+  (products: Product[]): void;
+}
+
 export default class ProductController {
   static storeKey = Symbol('ProductControllerStoreKey');
 
   private lastFetch?: Date;
   private productIds = new Set<Product['id']>();
   private abortController = new AbortController();
+  private productChangeListeners: ProductChangeListener[] = [];
 
   constructor(private readonly cacheTime = 1000 * 60 * 15 /* 15 minutes */) {}
 
@@ -54,6 +59,7 @@ export default class ProductController {
 
   public set products(products: Product[]) {
     Reflect.set(globalThis, ProductController.storeKey, products);
+    this.productChangeListeners.forEach((callback) => callback(products));
   }
 
   public get products(): Product[] {
@@ -85,6 +91,18 @@ export default class ProductController {
 
       return this.products;
     }
+  };
+
+  public onProductsChange = (callback: ProductChangeListener): (() => void) => {
+    this.productChangeListeners.push(callback);
+
+    return () => {
+      const index = this.productChangeListeners.indexOf(callback);
+
+      if (index > -1) {
+        this.productChangeListeners.splice(index, 1);
+      }
+    };
   };
 
   public abort = async (): Promise<void> => {

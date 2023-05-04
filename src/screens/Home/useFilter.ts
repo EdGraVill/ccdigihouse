@@ -6,17 +6,15 @@ import { type Product } from '../../controllers';
 export default function useFilter(products: Product[]) {
   const [filter, setFilter] = useState<Filter>(Filter.All);
 
-  const filteredProducts = useMemo(() => {
-    if (filter === Filter.Expenses) {
-      return products.filter(({ isRedemption }) => isRedemption);
-    }
+  // This will cache the filtered products in memory
+  const filteredByExpenses = useMemo(() => products.filter(({ isRedemption }) => isRedemption), [products]);
+  const filteredByIncomes = useMemo(() => products.filter(({ isRedemption }) => isRedemption), [products]);
 
-    if (filter === Filter.Incomes) {
-      return products.filter(({ isRedemption }) => !isRedemption);
-    }
+  const filterMap: Record<Filter, Product[]> = {
+    [Filter.All]: products,
+    [Filter.Expenses]: filteredByExpenses,
+    [Filter.Incomes]: filteredByIncomes,
+  };
 
-    return products;
-  }, [filter, products]);
-
-  return { filter, filteredProducts, setFilter };
+  return { filter, filteredProducts: filterMap[filter], setFilter };
 }

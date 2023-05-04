@@ -24,10 +24,11 @@ export default StyleSheet.create({
     backgroundColor: '#CFD6FF',
   },
   image: {
-    aspectRatio: 1,
+    height: '100%',
     width: '100%',
   },
   imageContainer: {
+    aspectRatio: 1,
     backgroundColor: theme.colors.white,
     borderRadius: 10,
     shadowColor: theme.colors.black,

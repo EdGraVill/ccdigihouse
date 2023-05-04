@@ -1,9 +1,10 @@
 import format from 'date-fns/format';
 import es from 'date-fns/locale/es';
 import type { ListRenderItem } from 'react-native';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import type { Product } from '../../controllers';
+import Image from '../Image';
 import styles from './styles';
 
 const ListProduct: ListRenderItem<Product> = ({ item }) => {

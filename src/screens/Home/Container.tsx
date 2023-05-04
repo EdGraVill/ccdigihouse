@@ -7,16 +7,19 @@ import Home from './Home';
 
 export default function Container({ navigation }: NativeStackScreenProps<RootStackParamList, 'Home'>) {
   const {
-    current: { abort, fetchProducts },
+    current: { abort, fetchProducts, onProductsChange },
   } = useRef(new ProductsController());
   const [products, setProducts] = useState<Product[]>([]);
   const [isFetching, setIsFetching] = useState(false);
 
   const refreshProducts = useCallback(() => {
     setIsFetching(true);
-    fetchProducts()
-      .then(setProducts)
-      .finally(() => setIsFetching(false));
+    fetchProducts().finally(() => setIsFetching(false));
+  }, []);
+
+  useEffect(() => {
+    // onProductsChange is returning the cleanup function
+    return onProductsChange(setProducts);
   }, []);
 
   useEffect(() => {

@@ -4,3 +4,4 @@ export { default as PointsCard } from './PointsCard';
 export { default as ProductList } from './ProductList';
 export { default as FilterButtons, Filter } from './FilterButtons';
 export { default as Button } from './Button';
+export { default as Image } from './Image';

@@ -1,9 +1,9 @@
 import format from 'date-fns/format';
 import es from 'date-fns/locale/es';
 import type { FC } from 'react';
-import { Image, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, Text, View } from 'react-native';
 
-import { Button, Section } from '../../components';
+import { Button, Image, Section } from '../../components';
 import type { Product } from '../../controllers';
 import styles from './styles';
 
